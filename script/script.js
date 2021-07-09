@@ -55,11 +55,11 @@ const getData = async () => {
      }
 }
 
-const getGoods = (callback, value) => {
+const getGoods = (callback, prop, value) => {
     getData()
         .then(data => {
             if (value) {
-                callback(data.filter(item => item.category === value))
+                callback(data.filter(item => item[prop] === value))
             } else {
                 callback(data)
             }
@@ -80,7 +80,7 @@ try {
     const goodsTitle = document.querySelector('.goods__title');
 
     const changeTitle = () => {
-        goodsTitle.textContent = document.querySelector(`[href*=${hash}]`).textContent;
+        goodsTitle.textContent = document.querySelector(`[href*="#${hash}"]`).textContent;
     }
 
     const createCart = ({ id, preview, cost, brand, name, sizes }) => {
@@ -143,12 +143,12 @@ try {
     };
     window.addEventListener('hashchange', () => {
         hash = location.hash.substring(1)
-        getGoods(renderGoodsList, hash)
+        getGoods(renderGoodsList, 'category', hash)
         changeTitle();
     })
 
     changeTitle();
-    getGoods(renderGoodsList, hash)
+    getGoods(renderGoodsList, 'category', hash)
 
 } catch (error) {
     console.warn(error)
@@ -169,3 +169,24 @@ cartOverlay.addEventListener('click', el => {
         cartModalClose();
     }
 })
+
+// Страница категорий
+try {
+
+} catch (err) {
+    console.warn(err)
+}
+
+// Страница товара
+
+try {
+
+    if (!document.querySelector('.card-good')) {
+        throw 'This is not a card-good page'
+    }
+
+
+
+} catch (err) {
+    console.warn(err)
+}
