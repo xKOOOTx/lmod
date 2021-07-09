@@ -69,11 +69,18 @@ const getGoods = (callback, value) => {
         });
 }
 
+// Страница товаров
 try {
     const goodsList = document.querySelector('.goods__list');
 
     if (!goodsList) {
         throw 'This is not a goods page!'
+    }
+
+    const goodsTitle = document.querySelector('.goods__title');
+
+    const changeTitle = () => {
+        goodsTitle.textContent = document.querySelector(`[href*=${hash}]`).textContent;
     }
 
     const createCart = ({ id, preview, cost, brand, name, sizes }) => {
@@ -103,6 +110,29 @@ try {
         return li;
     };
 
+    // const createGoodsTitle = () => {
+    //     const goodsSelector = document.querySelector('.goods');
+    //     const goodsContainer = goodsSelector.querySelector('.container');
+    //     const goodsTitle = document.createElement('h2');
+    //     const links = document.querySelectorAll('.navigation__link');
+    //     const forWomen = 'Женщинам';
+    //     goodsTitle.classList.add('goods__title');
+    //     goodsTitle.innerHTML = '';
+    //
+    //     const renderGoodsTitle = () => {
+    //         links.forEach(link => {
+    //             link.addEventListener('click', () => {
+    //                 goodsTitle.textContent = '';
+    //                 goodsTitle.innerHTML = link.innerHTML;
+    //                 console.log(link.innerHTML)
+    //                 goodsContainer.prepend(goodsTitle)
+    //             })
+    //         })
+    //     }
+    //     renderGoodsTitle(createGoodsTitle)
+    // }
+    // createGoodsTitle();
+
     const renderGoodsList = data => {
         goodsList.textContent = ``;
 
@@ -111,12 +141,13 @@ try {
             goodsList.append(card);
         })
     };
-
     window.addEventListener('hashchange', () => {
         hash = location.hash.substring(1)
         getGoods(renderGoodsList, hash)
+        changeTitle();
     })
 
+    changeTitle();
     getGoods(renderGoodsList, hash)
 
 } catch (error) {
@@ -137,20 +168,4 @@ cartOverlay.addEventListener('click', el => {
     if (target.classList.contains('cart__btn-close') || target.matches('.cart-overlay')) {
         cartModalClose();
     }
-})
-
-const navigationLink = document.querySelectorAll('.navigation__link');
-const goodsTitle = document.querySelector('.goods__title');
-
-navigationLink.forEach(el => {
-    const goodsList = document.querySelector('.goods__list');
-    if (!goodsList) {
-        throw 'This is not a goods page!'
-    }
-    console.log(el.innerHTML)
-
-    el.addEventListener('click', () => {
-        goodsTitle.textContent = '';
-        goodsTitle.append(el.innerHTML);
-    })
 })
